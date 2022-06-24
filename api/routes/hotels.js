@@ -1,27 +1,21 @@
 import express from "express";
+import { createHotel, deleteHotel, getHotel, getHotels, updateHotel } from "../controllers/hotel.js";
 import Hotel from "../models/Hotel.js";
+import { createError } from "../untils/error.js";
 
 const router = express.Router();
 
 // create
 
-router.post("/", async (req, res) => {
-    const newHotel = new Hotel(req.body);
-    try {
-        const saveHotel = await newHotel.save();
-        res.status(200).json(saveHotel);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
+router.post("/", createHotel)
 // update
-router.put("/:id", async (req, res) => {
-    try {
-        const updateHotel = await Hotel.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true});
-        res.status(200).json(updateHotel);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
+router.put("/:id", updateHotel)
 
+// delte
+router.delete("/:id", deleteHotel)
+// get
+router.get("/:id",getHotel)
+
+// getAll
+router.get("/", getHotels)
 export default router;
